@@ -7,7 +7,7 @@ plugins {
     jacoco
     id("org.springframework.boot") version "3.5.7"
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.sonarqube") version "6.3.1.5724"
+    id("org.sonarqube") version "7.0.1.6134"
     id("io.freefair.lombok") version "8.13.1"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
