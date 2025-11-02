@@ -41,7 +41,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
 
-
+    implementation("org.postgresql:postgresql:42.7.4")
     implementation("org.openapitools:jackson-databind-nullable:0.2.7")
 
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
