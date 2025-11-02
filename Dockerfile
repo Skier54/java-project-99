@@ -1,8 +1,8 @@
-FROM gradle:8.14.3-jdk23
+FROM gradle:8.14-jdk21
 
 WORKDIR /app
 
-COPY /app .
+COPY . .
 
 RUN gradle installDist
 
