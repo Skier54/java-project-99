@@ -15,13 +15,13 @@ public class UserUpdateDTO {
     @Email
     private JsonNullable<String> email;
 
-    @Size(min = 2, max = 30)
+    //@Size(min = 2, max = 30)
     private JsonNullable<String> firstName;
 
-    @Size(min = 2, max = 30)
+    //@Size(min = 2, max = 30)
     private JsonNullable<String> lastName;
 
     @NotBlank
-    @Size(min = 3, max = 30)
+    @Size(min = 3)
     private JsonNullable<String> password;
 }

@@ -42,11 +42,13 @@ public class User implements BaseEntity, UserDetails {
     private Long id;
 
     //@NotBlank(message = "Имя не может быть пустым")
-    @Size(min = 2, max = 30)
+    //@Column(nullable = true, length = 30)
+    //@Size(min = 2, max = 30)
     private String firstName;
 
     //@NotBlank(message = "Фамилия не может быть пустой")
-    @Size(min = 2, max = 30)
+    //@Column(nullable = true, length = 30)
+    //@Size(min = 2, max = 30)
     private String lastName;
 
     @Column(unique = true)
@@ -55,7 +57,8 @@ public class User implements BaseEntity, UserDetails {
     private String email;
 
     @NotBlank(message = "Пароль не может быть пустой")
-    @Size(min = 3, max = 30)
+    //@Column(name = "password")
+    @Size(min = 3)
     private String passwordDigest;
 
     @CreatedDate

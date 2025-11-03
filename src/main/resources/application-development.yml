@@ -3,7 +3,7 @@ spring:
     activate:
       on-profile: development
   datasource:
-    url: jdbc:h2:file:./data/devdb;MODE=MySQL;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    url: jdbc:h2:mem:testdb
     username: sa
     password:
     driver-class-name: org.h2.Driver
