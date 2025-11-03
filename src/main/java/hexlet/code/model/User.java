@@ -9,10 +9,11 @@ import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.EqualsAndHashCode;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,6 +29,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
+//@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -39,11 +41,11 @@ public class User implements BaseEntity, UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @NotBlank(message = "Имя не может быть пустым")
+    //@NotBlank(message = "Имя не может быть пустым")
     @Size(min = 2, max = 30)
     private String firstName;
 
-    @NotBlank(message = "Фамилия не может быть пустой")
+    //@NotBlank(message = "Фамилия не может быть пустой")
     @Size(min = 2, max = 30)
     private String lastName;
 
@@ -53,11 +55,11 @@ public class User implements BaseEntity, UserDetails {
     private String email;
 
     @NotBlank(message = "Пароль не может быть пустой")
-    @Size(min = 2, max = 30)
+    @Size(min = 3, max = 30)
     private String passwordDigest;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    //@Column(nullable = false, updatable = false)
     private LocalDate createdAt;
 
     @LastModifiedDate
