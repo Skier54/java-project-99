@@ -3,9 +3,9 @@ spring:
     activate:
       on-profile: production
   datasource:
-    url: ${DB_URL:jdbc:postgresql://dpg-d43fp1ali9vc73cvoaf0-a.oregon-postgres.render.com:5432/name99}
-    username: ${DB_USERNAME:name99_user}
-    password: ${DB_PASSWORD:L2dTkyNe9PJCDz5RYNgm6DMOGxcSB2gT}
+    url: ${JDBC_DATABASE_URL}
+    username: ${JDBC_DATABASE_USERNAME}
+    password: ${JDBC_DATABASE_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     show-sql: false
