@@ -46,10 +46,12 @@ dependencies {
     implementation("org.openapitools:jackson-databind-nullable:0.2.7")
 
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
-    implementation("net.datafaker:datafaker:2.5.0")
+    implementation("net.datafaker:datafaker:2.4.4")
 
     implementation("org.projectlombok:lombok:1.18.40")
     annotationProcessor("org.projectlombok:lombok:1.18.40")
+
+    implementation("org.instancio:instancio-core:5.5.0")
 
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
