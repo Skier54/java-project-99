@@ -5,16 +5,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 //import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 //import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+//import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -23,7 +27,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Autowired
     private JwtDecoder jwtDecoder;
@@ -39,12 +43,14 @@ public class SecurityConfig {
             throws Exception {
         // По умолчанию все запрещено
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/").permitAll()
-                        //.requestMatchers("/api/users").permitAll()
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers("/welcome").permitAll()
+                        //.requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                        //.requestMatchers("/api/users").permitAll()
                         //.requestMatchers("/index.html").permitAll()
                         //.requestMatchers("/assets/**").permitAll()
                         .anyRequest().authenticated())
@@ -54,19 +60,25 @@ public class SecurityConfig {
                 .build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return new ProviderManager(provider); // Явно передаём провайдер
-    }
-
 //    @Bean
-//    public AuthenticationProvider daoAuthProvider(AuthenticationManagerBuilder auth) {
-//        var provider = new DaoAuthenticationProvider();
+//    public AuthenticationManager authenticationManager() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 //        provider.setUserDetailsService(userService);
 //        provider.setPasswordEncoder(passwordEncoder);
-//        return provider;
+//        return new ProviderManager(provider); // Явно передаём провайдер
 //    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .build();
+    }
+
+    @Bean
+    public AuthenticationProvider daoAuthProvider(AuthenticationManagerBuilder auth) {
+        var provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return provider;
+    }
 }
