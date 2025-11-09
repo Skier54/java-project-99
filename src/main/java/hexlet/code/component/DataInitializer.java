@@ -2,7 +2,9 @@ package hexlet.code.component;
 
 //import hexlet.code.dto.dtoUser.UserCreateDTO;
 //import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
@@ -22,7 +24,7 @@ public class DataInitializer implements ApplicationRunner {
 
     private final CustomUserDetailsService userService;
 
-    //private final PasswordEncoder passwordEncoder;
+    private final TaskStatusRepository taskStatusRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -37,5 +39,19 @@ public class DataInitializer implements ApplicationRunner {
         } else {
             System.out.println("Администратор уже существует: " + email);
         }
+        if (taskStatusRepository.findAll().isEmpty()) {
+            createTaskStatus("Draft", "draft");
+            createTaskStatus("To review", "to_review");
+            createTaskStatus("To be fixed", "to_be_fixed");
+            createTaskStatus("To publish", "to_publish");
+            createTaskStatus("Published", "published");
+        }
+    }
+
+    private void createTaskStatus(String name, String slug) {
+        var taskStatus = new TaskStatus();
+        taskStatus.setName(name);
+        taskStatus.setSlug(slug);
+        taskStatusRepository.save(taskStatus);
     }
 }

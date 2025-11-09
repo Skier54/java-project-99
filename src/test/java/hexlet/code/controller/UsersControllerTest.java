@@ -84,11 +84,26 @@ public class UsersControllerTest {
     public void testIndex() throws Exception {
         var result = mockMvc.perform(get("/api/users")
                         .with(token))
-                .andExpect(status()
-                .isOk())
+                .andExpect(status().isOk())
                 .andReturn();
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).isArray();
+    }
+
+    @Test
+    public void testShow() throws Exception {
+        var request = get("/api/users/" + testUser.getId()).with(token);
+
+        var result = mockMvc.perform(request)
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).and(
+                v -> v.node("email").isEqualTo(testUser.getEmail()),
+                v -> v.node("firstName").isEqualTo(testUser.getFirstName()),
+                v -> v.node("lastName").isEqualTo(testUser.getLastName())
+        );
     }
 
     @Test
@@ -126,22 +141,6 @@ public class UsersControllerTest {
 
         var user = userRepository.findById(testUser.getId()).orElseThrow();
         assertThat(user.getFirstName()).isEqualTo(dto.getFirstName().get());
-    }
-
-    @Test
-    public void testShow() throws Exception {
-        var request = get("/api/users/" + testUser.getId()).with(token);
-
-        var result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andReturn();
-
-        var body = result.getResponse().getContentAsString();
-        assertThatJson(body).and(
-                v -> v.node("email").isEqualTo(testUser.getEmail()),
-                v -> v.node("firstName").isEqualTo(testUser.getFirstName()),
-                v -> v.node("lastName").isEqualTo(testUser.getLastName())
-        );
     }
 
     @Test
