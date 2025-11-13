@@ -44,7 +44,7 @@ public class SecurityConfig {
             throws Exception {
         // По умолчанию все запрещено
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/").permitAll()
