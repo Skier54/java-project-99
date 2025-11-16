@@ -4,13 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -26,43 +23,28 @@ import java.util.Set;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "labels")
 @EntityListeners(AuditingEntityListener.class)
 //@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Task implements BaseEntity {
+public class Label implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
 
+    @Column(unique = true)
     @NotBlank
-    @Size(min = 1)
+    @Size(min = 3, max = 1000)
     private String name;
-
-    private Long index;
-
-    private String description;
-
-    @ManyToOne
-    @NotNull
-    private TaskStatus taskStatus;
-
-    @ManyToOne
-    private User assignee;
 
     @CreatedDate
     private LocalDate createdAt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tasks_labels",
-            joinColumns = @JoinColumn(name = "tasks_id"),
-            inverseJoinColumns = @JoinColumn(name = "labels_id")
-    )
-    private Set<Label> labels = new HashSet<>();
+    @ManyToMany(mappedBy = "labels")
+    private Set<Task> tasks = new HashSet<>();
 }

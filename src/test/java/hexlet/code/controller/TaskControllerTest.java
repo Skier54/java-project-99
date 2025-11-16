@@ -3,9 +3,11 @@ package hexlet.code.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.dtoTask.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -25,6 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,6 +68,9 @@ public class TaskControllerTest {
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
     private Faker faker;
 
     @Autowired
@@ -76,11 +82,14 @@ public class TaskControllerTest {
 
     private TaskStatus testTaskStatus;
 
+    private Label testLabel;
+
     @BeforeEach
     public void setUp() {
         taskRepository.deleteAll();
         userRepository.deleteAll();
         taskStatusRepository.deleteAll();
+        labelRepository.deleteAll();
 
         mockMvc = MockMvcBuilders.webAppContextSetup(wac)
                 .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
@@ -93,11 +102,15 @@ public class TaskControllerTest {
         testTaskStatus = Instancio.of(modelGenerator.getTaskStatusModel()).create();
         taskStatusRepository.save(testTaskStatus);
 
+        testLabel = Instancio.of(modelGenerator.getLabelModel()).create();
+        labelRepository.save(testLabel);
+        Set<Label> labelSet = Set.of(testLabel);
+
         testTask = Instancio.of(modelGenerator.getTaskModel()).create();
 
         testTask.setAssignee(testUser);
         testTask.setTaskStatus(testTaskStatus);
-
+        testTask.setLabels(labelSet);
         //taskRepository.save(testTask);
     }
 

@@ -4,8 +4,10 @@ import hexlet.code.dto.dtoTask.TaskCreateDTO;
 import hexlet.code.dto.dtoTask.TaskDTO;
 import hexlet.code.dto.dtoTask.TaskUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mapper;
@@ -14,6 +16,10 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Mapper(
         uses = { JsonNullableMapper.class, ReferenceMapper.class },
@@ -26,26 +32,43 @@ public abstract class TaskMapper {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
+    @Autowired
+    private LabelRepository labelRepository;
+
     @Mapping(target = "name", source = "title")
     @Mapping(target = "description", source = "content")
     @Mapping(target = "taskStatus", source = "status")
     @Mapping(target = "assignee", source = "assigneeId")
+    @Mapping(target = "labels", source = "taskLabelIds")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(target = "title", source = "name")
     @Mapping(target = "content", source = "description")
     @Mapping(target = "status", source = "taskStatus.slug")
     @Mapping(target = "assigneeId", source = "assignee.id")
+    @Mapping(target = "taskLabelIds", source = "labels")
     public abstract TaskDTO map(Task task);
 
     @Mapping(target = "name", source = "title")
     @Mapping(target = "description", source = "content")
     @Mapping(target = "taskStatus", source = "status")
     @Mapping(target = "assignee", source = "assigneeId")
+    @Mapping(target = "labels", source = "taskLabelIds")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task task);
 
     public TaskStatus toEntity(String slug) {
         return taskStatusRepository.findBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Status not found"));
+    }
+
+    public Set<Label> getLabels(Set<Long> labelIds) {
+        return labelRepository.findByIdIn(labelIds);
+    }
+
+    public Set<Long> getLabelIds(Set<Label> labels) {
+        return labels == null ? new HashSet<>()
+                : labels.stream()
+                .map(Label::getId)
+                .collect(Collectors.toSet());
     }
 }

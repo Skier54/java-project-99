@@ -1,5 +1,6 @@
 package hexlet.code.util;
 
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
@@ -11,6 +12,7 @@ import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Model;
 import org.instancio.Select;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,8 @@ public class ModelGenerator {
     private Model<TaskStatus> taskStatusModel;
 
     private Model<Task> taskModel;
+
+    private Model<Label> labelModel;
 
     @Autowired
     private Faker faker;
@@ -48,6 +52,11 @@ public class ModelGenerator {
                 .supply(Select.field(Task::getName), () -> faker.name().title())
                 .supply(Select.field(Task::getIndex), () -> faker.number().randomNumber())
                 .supply(Select.field(Task::getDescription), () -> faker.lorem().word())
+                .toModel();
+
+        labelModel = Instancio.of(Label.class)
+                .ignore(Select.field(Label::getId))
+                .supply(Select.field(Label::getName), () -> faker.name().title())
                 .toModel();
     }
 }

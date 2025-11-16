@@ -53,6 +53,8 @@ dependencies {
 
     implementation("org.instancio:instancio-core:5.5.0")
 
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.5")
+
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
     testAnnotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")

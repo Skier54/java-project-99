@@ -14,6 +14,14 @@ server:
   address: 0.0.0.0
   port: ${PORT:8080}
 
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+  packages-to-scan: hexlet.code.controller
+  paths-to-exclude: /actuator/**,/error/**
+
 rsa:
   private-key: classpath:certs/private.pem
   public-key: classpath:certs/public.pem
