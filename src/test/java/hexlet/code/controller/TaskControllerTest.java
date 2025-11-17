@@ -1,6 +1,7 @@
 package hexlet.code.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.dto.dtoTask.TaskParamsDTO;
 import hexlet.code.dto.dtoTask.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
@@ -122,6 +123,88 @@ public class TaskControllerTest {
                 .andReturn();
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).isArray();
+    }
+
+    @Test
+    public void testIndexWithTitleCont() throws Exception {
+        var searchSubstring = testTask.getName().substring(1).toLowerCase();
+        var param = new TaskParamsDTO();
+        param.setTitleCont(searchSubstring);
+        taskRepository.save(testTask);
+
+        var result = mockMvc.perform(get("/api/tasks")
+                        .param("titleCont", searchSubstring)
+                        .with(jwt()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).isArray().allSatisfy(element ->
+                assertThatJson(element)
+                        .and(v -> v.node("title").asString().containsIgnoringCase(searchSubstring))
+         );
+    }
+
+    @Test
+    public void testIndexWithAssigneeId() throws Exception {
+        var param = new TaskParamsDTO();
+        param.setAssigneeId(testUser.getId());
+        taskRepository.save(testTask);
+
+        var result = mockMvc.perform(get("/api/tasks")
+                        .param("assigneeId", String.valueOf(testUser.getId()))
+                        .with(jwt()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).isArray().allSatisfy(element ->
+                assertThatJson(element)
+                        .and(v -> v.node("assignee_id").isEqualTo(testTask.getAssignee().getId()))
+        );
+    }
+
+    @Test
+    public void testIndexWithStatus() throws Exception {
+        var param = new TaskParamsDTO();
+        param.setStatus(testTaskStatus.getSlug());
+        taskRepository.save(testTask);
+
+        var result = mockMvc.perform(get("/api/tasks")
+                        .param("status", testTaskStatus.getSlug())
+                        .with(jwt()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).isArray().allSatisfy(element ->
+                assertThatJson(element)
+                        .and(v -> v.node("status").isEqualTo(testTask.getTaskStatus().getSlug()))
+        );
+    }
+
+    @Test
+    public void testIndexWithLabelId() throws Exception {
+        var param = new TaskParamsDTO();
+        param.setLabelId(testLabel.getId());
+        taskRepository.save(testTask);
+
+        var result = mockMvc.perform(get("/api/tasks")
+                        .param("labelId", String.valueOf(testLabel.getId()))
+                        .with(jwt()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var body = result.getResponse().getContentAsString();
+
+        var expectedLabelIds = testTask.getLabels().stream()
+                .map(Label::getId)
+                .toList();
+
+        assertThatJson(body).isArray().allSatisfy(element ->
+                assertThatJson(element)
+                        .and(v -> v.node("taskLabelIds").isEqualTo(expectedLabelIds))
+        );
     }
 
     @Test
