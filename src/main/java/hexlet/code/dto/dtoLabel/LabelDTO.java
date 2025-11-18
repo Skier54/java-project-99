@@ -3,12 +3,12 @@ package hexlet.code.dto.dtoLabel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 public class LabelDTO {
     private Long id;
     private String name;
-    private Date createdAt;
+    private LocalDateTime createdAt;
 }
