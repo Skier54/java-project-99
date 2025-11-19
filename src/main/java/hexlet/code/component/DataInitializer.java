@@ -43,21 +43,34 @@ public class DataInitializer implements ApplicationRunner {
         } else {
             System.out.println("Администратор уже существует: " + email);
         }
+
         if (taskStatusRepository.findAll().isEmpty()) {
             createTaskStatus("Draft", "draft");
             createTaskStatus("To review", "to_review");
             createTaskStatus("To be fixed", "to_be_fixed");
             createTaskStatus("To publish", "to_publish");
             createTaskStatus("Published", "published");
+            System.out.println("Статусы созданы");
+        } else {
+            System.out.println("Статусы уже существует");
         }
 
-        var feature = new Label();
-        feature.setName("feature");
-        labelRepository.save(feature);
-
-        var bug = new Label();
-        bug.setName("bug");
-        labelRepository.save(bug);
+        if (labelRepository.findByName("feature").isEmpty()) {
+            var feature = new Label();
+            feature.setName("feature");
+            labelRepository.save(feature);
+            System.out.println("Метка создана: feature");
+        } else {
+            System.out.println("Метка уже существует: feature");
+        }
+        if (labelRepository.findByName("bug").isEmpty()) {
+            var bug = new Label();
+            bug.setName("bug");
+            labelRepository.save(bug);
+            System.out.println("Метка создана: bug");
+        } else {
+            System.out.println("Метка уже существует: bug");
+        }
     }
 
     private void createTaskStatus(String name, String slug) {
