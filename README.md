@@ -15,5 +15,5 @@
 https://java-project-99-quvs.onrender.com
 
 ### Документация
-- http://localhost:8080/swagger-ui
-- http://localhost:8080/api-docs
+- https://java-project-99-quvs.onrender.com/swagger-ui
+- https://java-project-99-quvs.onrender.com/api-docs
