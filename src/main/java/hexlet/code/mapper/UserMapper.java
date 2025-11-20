@@ -4,6 +4,7 @@ import hexlet.code.dto.dtoUser.UserCreateDTO;
 import hexlet.code.dto.dtoUser.UserDTO;
 import hexlet.code.dto.dtoUser.UserUpdateDTO;
 import hexlet.code.model.User;
+
 import org.mapstruct.BeforeMapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -11,6 +12,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

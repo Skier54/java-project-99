@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import hexlet.code.dto.dtoUser.UserCreateDTO;
+
 import hexlet.code.dto.dtoUser.UserUpdateDTO;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
@@ -39,7 +39,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
-//import java.util.HashMap;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,9 +48,6 @@ public class UsersControllerTest {
 
     @Autowired
     private WebApplicationContext wac;
-
-    @Autowired
-    private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper om;
@@ -77,7 +74,7 @@ public class UsersControllerTest {
     private ModelGenerator modelGenerator;
 
     private User testUser;
-
+    private MockMvc mockMvc;
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
     @BeforeEach

@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.dtoLabel.LabelUpdateDTO;
@@ -9,6 +9,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
+
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,9 +47,6 @@ public class LabelControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private ObjectMapper om;
 
     @Autowired
@@ -72,6 +70,7 @@ public class LabelControllerTest {
     @Autowired
     private ModelGenerator modelGenerator;
 
+    private MockMvc mockMvc;
     private Label testLabel;
 
     @BeforeEach
@@ -86,7 +85,6 @@ public class LabelControllerTest {
                 .apply(springSecurity())
                 .build();
         testLabel = Instancio.of(modelGenerator.getLabelModel()).create();
-        //labelRepository.save(testLabel);
     }
 
     @Test

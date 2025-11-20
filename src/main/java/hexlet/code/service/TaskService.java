@@ -8,22 +8,18 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.specification.TaskSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskService {
 
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskMapper taskMapper;
-
-    @Autowired
-    private TaskSpecification taskSpecification;
+    private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
+    private final TaskSpecification taskSpecification;
 
     public List<TaskDTO> getAllTasks(TaskParamsDTO params) {
         var spec = taskSpecification.build(params);
@@ -41,13 +37,13 @@ public class TaskService {
 
     public TaskDTO getTaskById(Long id) {
         var task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Задача с идентификатором " + id + " не найдена"));
         return taskMapper.map(task);
     }
 
     public TaskDTO updateTask(TaskUpdateDTO taskData, Long id) {
         var task = taskRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Задача с идентификатором " + id + " не найдена"));
         taskMapper.update(taskData, task);
         taskRepository.save(task);
         return taskMapper.map(task);

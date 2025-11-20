@@ -7,22 +7,18 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final TaskRepository taskRepository;
+    private final UserMapper userMapper;
 
     public List<UserDTO> getAllUsers() {
         var users = userRepository.findAll();
@@ -39,13 +35,17 @@ public class UserService {
 
     public UserDTO getUserById(Long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Пользователь с идентификатором " + id + " не найден"
+                ));
         return userMapper.map(user);
     }
 
     public UserDTO updateUser(UserUpdateDTO userData, Long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Пользователь с идентификатором " + id + " не найден"
+                ));
         userMapper.update(userData, user);
         userRepository.save(user);
         return userMapper.map(user);
@@ -57,9 +57,7 @@ public class UserService {
         }
 
         if (taskRepository.existsByAssigneeId(id)) {
-            throw new IllegalStateException(
-                    "Пользователь не может быть удалён: на него назначены задачи"
-            );
+            throw new IllegalStateException("Пользователь не может быть удалён: на него назначены задачи");
         }
         userRepository.deleteById(id);
     }

@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.dtoTaskStatus.TaskStatusUpdateDTO;
@@ -9,6 +9,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
+
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,9 +47,6 @@ public class TaskStatusControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private ObjectMapper om;
 
     @Autowired
@@ -73,6 +71,7 @@ public class TaskStatusControllerTest {
     private ModelGenerator modelGenerator;
 
     private TaskStatus testTaskStatus;
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {

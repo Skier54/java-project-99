@@ -4,6 +4,7 @@ import hexlet.code.dto.dtoTaskStatus.TaskStatusCreateDTO;
 import hexlet.code.dto.dtoTaskStatus.TaskStatusDTO;
 import hexlet.code.dto.dtoTaskStatus.TaskStatusUpdateDTO;
 import hexlet.code.model.TaskStatus;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;

@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,7 +30,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
-//@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Getter
 @Setter
@@ -41,14 +41,8 @@ public class User implements BaseEntity, UserDetails {
     @EqualsAndHashCode.Include
     private Long id;
 
-    //@NotBlank(message = "Имя не может быть пустым")
-    //@Column(nullable = true, length = 30)
-    //@Size(min = 2, max = 30)
     private String firstName;
 
-    //@NotBlank(message = "Фамилия не может быть пустой")
-    //@Column(nullable = true, length = 30)
-    //@Size(min = 2, max = 30)
     private String lastName;
 
     @Column(unique = true)
@@ -57,12 +51,10 @@ public class User implements BaseEntity, UserDetails {
     private String email;
 
     @NotBlank(message = "Пароль не может быть пустой")
-    //@Column(name = "password")
     @Size(min = 3)
     private String passwordDigest;
 
     @CreatedDate
-    //@Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate

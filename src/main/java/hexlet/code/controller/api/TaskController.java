@@ -1,12 +1,15 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import hexlet.code.dto.dtoTask.TaskCreateDTO;
 import hexlet.code.dto.dtoTask.TaskDTO;
 import hexlet.code.dto.dtoTask.TaskParamsDTO;
 import hexlet.code.dto.dtoTask.TaskUpdateDTO;
 import hexlet.code.service.TaskService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")

@@ -2,14 +2,16 @@ package hexlet.code.util;
 
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class UserUtils {
-    @Autowired
-    private UserRepository userRepository;
+
+    private final UserRepository userRepository;
 
     public User getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -18,6 +20,6 @@ public class UserUtils {
         }
         var email = authentication.getName();
         return userRepository.findByEmail(email)
-                .orElseThrow(() ->  new RuntimeException("User not found"));
+                .orElseThrow(() ->  new RuntimeException("Пользователь не найден"));
     }
 }

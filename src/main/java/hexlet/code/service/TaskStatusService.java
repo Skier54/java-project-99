@@ -7,22 +7,18 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class TaskStatusService {
 
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskStatusMapper taskStatusMapper;
+    private final TaskStatusRepository taskStatusRepository;
+    private final TaskRepository taskRepository;
+    private final TaskStatusMapper taskStatusMapper;
 
     public List<TaskStatusDTO> getAllTaskStatus() {
         var taskStatuses = taskStatusRepository.findAll();
@@ -39,14 +35,16 @@ public class TaskStatusService {
 
     public TaskStatusDTO getTaskStatusById(Long id) {
         var taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Статус задачи с идентификатором " + id + " не найден"
+                ));
         System.out.println("[DEBUG] Entity has slug: " + taskStatus.getSlug());
         return taskStatusMapper.map(taskStatus);
     }
 
     public TaskStatusDTO updateTaskStatus(TaskStatusUpdateDTO taskStatusData, Long id) {
         var taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Статус с идентификатором " + id + " не найден"));
         taskStatusMapper.update(taskStatusData, taskStatus);
         taskStatusRepository.save(taskStatus);
         return taskStatusMapper.map(taskStatus);
@@ -58,9 +56,7 @@ public class TaskStatusService {
         }
 
         if (taskRepository.existsByTaskStatusId(id)) {
-            throw new IllegalStateException(
-                    "Статус не может быть удалён: на него назначены задачи"
-            );
+            throw new IllegalStateException("Статус не может быть удалён: на него назначены задачи");
         }
         taskStatusRepository.deleteById(id);
     }

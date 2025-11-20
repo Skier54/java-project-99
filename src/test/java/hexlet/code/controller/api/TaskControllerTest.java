@@ -1,6 +1,8 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.datafaker.Faker;
+
 import hexlet.code.dto.dtoTask.TaskParamsDTO;
 import hexlet.code.dto.dtoTask.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
@@ -13,11 +15,13 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
-import net.datafaker.Faker;
+
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import org.openapitools.jackson.nullable.JsonNullable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,9 +55,6 @@ public class TaskControllerTest {
     private WebApplicationContext wac;
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
     private ObjectMapper om;
 
     @Autowired
@@ -78,12 +79,10 @@ public class TaskControllerTest {
     private ModelGenerator modelGenerator;
 
     private Task testTask;
-
     private User testUser;
-
     private TaskStatus testTaskStatus;
-
     private Label testLabel;
+    private MockMvc mockMvc;
 
     @BeforeEach
     public void setUp() {

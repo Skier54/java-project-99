@@ -6,19 +6,17 @@ import hexlet.code.dto.dtoLabel.LabelUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.repository.LabelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class LabelService {
 
-    @Autowired
-    private LabelRepository labelRepository;
-
-    @Autowired
-    private LabelMapper labelMapper;
+    private final LabelRepository labelRepository;
+    private final LabelMapper labelMapper;
 
     public List<LabelDTO> getAllLabels() {
         var labels = labelRepository.findAll();
@@ -35,13 +33,13 @@ public class LabelService {
 
     public LabelDTO getLabelById(Long id) {
         var label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Метка с идентификатором " + id + " не найдена"));
         return labelMapper.map(label);
     }
 
     public LabelDTO updateLabel(LabelUpdateDTO labelData, Long id) {
         var label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Метка с идентификатором " + id + " не найдена"));
         labelMapper.update(labelData, label);
         labelRepository.save(label);
         return labelMapper.map(label);
@@ -50,7 +48,7 @@ public class LabelService {
     public void deleteLabel(Long id) {
 
         var label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Метка не найдена"));
+                .orElseThrow(() -> new ResourceNotFoundException("Метка с идентификатором " + id + " не найдена"));
 
         if (!label.getTasks().isEmpty()) {
             throw new IllegalStateException(

@@ -12,10 +12,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -28,7 +30,6 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
-//@ToString(includeFieldNames = true, onlyExplicitlyIncluded = true)
 @NoArgsConstructor
 @Getter
 @Setter

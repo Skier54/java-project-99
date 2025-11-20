@@ -4,6 +4,7 @@ import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,9 +18,8 @@ public class OpenApiConfig {
                         .title("API Documentation java-project-99")
                         .version("1.0.0")
                         .description("Документация API веб‑приложения")
-                        //.termsOfService("http://localhost:8080/terms")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org")))
-                .externalDocs(new ExternalDocumentation()
+                        .externalDocs(new ExternalDocumentation()
                         .description("Документация Task")
                         .url("http://localhost:8080/swagger-ui"));
     }
