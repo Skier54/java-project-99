@@ -3,62 +3,14 @@ package hexlet.code.service;
 import hexlet.code.dto.dtoUser.UserCreateDTO;
 import hexlet.code.dto.dtoUser.UserDTO;
 import hexlet.code.dto.dtoUser.UserUpdateDTO;
-import hexlet.code.exception.ResourceNotFoundException;
-import hexlet.code.mapper.UserMapper;
-import hexlet.code.repository.TaskRepository;
-import hexlet.code.repository.UserRepository;
 
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
-@AllArgsConstructor
-public class UserService {
 
-    private final UserRepository userRepository;
-    private final TaskRepository taskRepository;
-    private final UserMapper userMapper;
-
-    public List<UserDTO> getAllUsers() {
-        var users = userRepository.findAll();
-        return users.stream()
-                .map(userMapper::map)
-                .toList();
-    }
-
-    public UserDTO createUser(UserCreateDTO userData) {
-        var user = userMapper.map(userData);
-        userRepository.save(user);
-        return userMapper.map(user);
-    }
-
-    public UserDTO getUserById(Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Пользователь с идентификатором " + id + " не найден"
-                ));
-        return userMapper.map(user);
-    }
-
-    public UserDTO updateUser(UserUpdateDTO userData, Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        "Пользователь с идентификатором " + id + " не найден"
-                ));
-        userMapper.update(userData, user);
-        userRepository.save(user);
-        return userMapper.map(user);
-    }
-
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Пользователь не найден");
-        }
-
-        if (taskRepository.existsByAssigneeId(id)) {
-            throw new IllegalStateException("Пользователь не может быть удалён: на него назначены задачи");
-        }
-        userRepository.deleteById(id);
-    }
+public interface UserService {
+    List<UserDTO> getAllUsers();
+    UserDTO createUser(UserCreateDTO userData);
+    UserDTO getUserById(Long id);
+    UserDTO updateUser(UserUpdateDTO userData, Long id);
+    void deleteUser(Long id);
 }

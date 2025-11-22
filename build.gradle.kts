@@ -2,7 +2,6 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    java
     checkstyle
     jacoco
     application
@@ -48,8 +47,8 @@ dependencies {
     implementation("jakarta.persistence:jakarta.persistence-api:3.1.0")
     implementation("net.datafaker:datafaker:2.4.4")
 
-    implementation("org.projectlombok:lombok:1.18.40")
-    annotationProcessor("org.projectlombok:lombok:1.18.40")
+    //implementation("org.projectlombok:lombok:1.18.40")
+    //annotationProcessor("org.projectlombok:lombok:1.18.40")
 
     implementation("org.instancio:instancio-core:5.5.0")
 
@@ -85,7 +84,7 @@ tasks.jacocoTestReport { reports { xml.required.set(true) } }
 sonar {
     properties {
         property("sonar.projectKey", "Skier54_java-project-99")
-        property("sonar.organization", "skier54") // для SonarCloud
+        property("sonar.organization", "skier54")
         property("sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml")
         property("sonar.junit.reportPaths", "build/test-results/test")
     }
