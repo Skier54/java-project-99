@@ -1,6 +1,8 @@
 package hexlet.code.controller.api;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.dto.dtoTask.TaskDTO;
 import net.datafaker.Faker;
 
 import hexlet.code.dto.dtoTask.TaskParamsDTO;
@@ -16,6 +18,7 @@ import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
 
+import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,6 +35,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
@@ -116,12 +120,24 @@ public class TaskControllerTest {
 
     @Test
     public void testIndex() throws Exception {
+        taskRepository.save(testTask);
         var result = mockMvc.perform(get("/api/tasks")
                         .with(jwt()))
                 .andExpect(status().isOk())
                 .andReturn();
+
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).isArray();
+
+        List<TaskDTO> taskDTOS = om.readValue(body, new TypeReference<>() {
+        });
+
+        var actual = taskDTOS.stream()
+                .map(taskMapper::map)
+                .toList();
+        var expected = taskRepository.findAll();
+
+        Assertions.assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
     @Test

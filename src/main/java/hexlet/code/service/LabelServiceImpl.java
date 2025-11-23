@@ -56,11 +56,11 @@ public class LabelServiceImpl implements LabelService {
         var label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Метка с идентификатором " + id + " не найдена"));
 
-        if (!label.getTasks().isEmpty()) {
-            throw new IllegalStateException(
-                    "Метка не может быть удалёна: она связана с задачей"
-            );
-        }
+//        if (!label.getTasks().isEmpty()) {
+//            throw new IllegalStateException(
+//                    "Метка не может быть удалёна: она связана с задачей"
+//            );
+//        }
         labelRepository.deleteById(id);
     }
 }
