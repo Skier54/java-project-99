@@ -58,13 +58,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(Long id) {
-//        if (!userRepository.existsById(id)) {
-//            throw new ResourceNotFoundException("Пользователь не найден");
-//        }
-
-//        if (taskRepository.existsByAssigneeId(id)) {
-//            throw new IllegalStateException("Пользователь не может быть удалён: на него назначены задачи");
-//        }
         userRepository.deleteById(id);
     }
 }
