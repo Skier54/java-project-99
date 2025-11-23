@@ -57,13 +57,13 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
     @Override
     public void deleteTaskStatus(Long id) {
-        if (!taskStatusRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Статус не найден");
-        }
+//        if (!taskStatusRepository.existsById(id)) {
+//            throw new ResourceNotFoundException("Статус не найден");
+//        }
 
-        if (taskRepository.existsByTaskStatusId(id)) {
-            throw new IllegalStateException("Статус не может быть удалён: на него назначены задачи");
-        }
+//        if (taskRepository.existsByTaskStatusId(id)) {
+//            throw new IllegalStateException("Статус не может быть удалён: на него назначены задачи");
+//        }
         taskStatusRepository.deleteById(id);
     }
 }
