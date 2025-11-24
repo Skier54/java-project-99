@@ -1,6 +1,7 @@
 package hexlet.code.dto.dtoTask;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,6 @@ public class TaskUpdateDTO {
     @JsonProperty("assignee_id")
     private JsonNullable<Long> assigneeId;
 
-    @NotBlank
+    @NotNull
     private JsonNullable<Set<Long>> taskLabelIds;
 }
